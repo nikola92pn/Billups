@@ -1,4 +1,5 @@
 using Billups.Api.Endpoints;
+using Billups.Api.Middlewares;
 using Billups.Api.Validation;
 using Billups.Application.Extensions;
 using Billups.Domain.Extensions;
@@ -27,6 +28,8 @@ if (app.Environment.IsDevelopment())
     app.UseSwagger();
     app.UseSwaggerUI();
 }
+
+app.UseMiddleware<ExceptionHandlingMiddleware>();
 
 // Endpoints
 app.MapEndpoints();

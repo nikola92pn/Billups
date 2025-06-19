@@ -8,12 +8,12 @@ namespace Billups.Application.Services;
 public class ChoiceService(IRandomNumberService randomNumberService) : IChoiceService
 {
     public IReadOnlyList<ChoiceDto> GetAll()
-        => Choices.All.Value;
+        => Choices.All;
 
     public async Task<ChoiceDto> GetRandomChoiceAsync(CancellationToken cancellationToken)
     {
         var randomMove = await GetRandomMoveAsync(cancellationToken);
-        return Choices.All.Value.First(c => c.Move == randomMove);
+        return Choices.All.First(c => c.Move == randomMove);
 
         async Task<Move> GetRandomMoveAsync(CancellationToken cancellationToken1)
         {
@@ -25,5 +25,5 @@ public class ChoiceService(IRandomNumberService randomNumberService) : IChoiceSe
     }
 
     public ChoiceDto GetChoice(int choiceId) 
-        => Choices.All.Value.First(c => c.Id == choiceId);
+        => Choices.All.First(c => c.Id == choiceId);
 }

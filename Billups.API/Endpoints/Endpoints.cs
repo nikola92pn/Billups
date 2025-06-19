@@ -2,6 +2,7 @@ using Billups.Api.Mappers;
 using Billups.Api.Models;
 using Billups.Application.Interfaces;
 using FluentValidation;
+using FluentValidation.Results;
 
 namespace Billups.Api.Endpoints;
 
@@ -14,11 +15,13 @@ public static class Endpoints
 
         choiceGroup.MapGet("/choices", GetChoices)
             .WithName("Get All Choices")
-            .Produces<ChoiceResponse[]>();
+            .Produces<ChoiceResponse[]>()
+            .Produces<ErrorResponse>(StatusCodes.Status500InternalServerError);
         
         choiceGroup.MapGet("/choice", GetRandomChoiceAsync)
             .WithName("Get Random Choice")
-            .Produces<ChoiceResponse>();
+            .Produces<ChoiceResponse>()
+            .Produces<ErrorResponse>(StatusCodes.Status500InternalServerError);
 
         var gamePlayGroup = app.MapGroup("")
             .WithTags("Play");
@@ -27,8 +30,8 @@ public static class Endpoints
             .WithName("Play Against CPU")
             .Accepts<PlayRequest>("application/json")
             .Produces<GameResultResponse>()
-            .ProducesValidationProblem()
-            .Produces(StatusCodes.Status400BadRequest);
+            .Produces<ValidationErrorResponse>(StatusCodes.Status400BadRequest)
+            .Produces<ErrorResponse>(StatusCodes.Status500InternalServerError);
     }
 
     private static IResult GetChoices(IChoiceService choiceService, CancellationToken cancellationToken)
@@ -49,7 +52,8 @@ public static class Endpoints
     {
         var validationResult = await validator.ValidateAsync(request, cancellationToken);
         if (!validationResult.IsValid)
-            return Results.BadRequest(validationResult.Errors);
+            return Results.BadRequest(validationResult.ToResponse());
+           
         
         var gameResult = await gameService.PlayAgainstCpuAsync(request.Player, cancellationToken);
         return Results.Ok(gameResult.ToResponse());
