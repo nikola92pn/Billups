@@ -3,11 +3,11 @@ using Billups.Domain.Models;
 
 namespace Billups.Domain.Services;
 
-internal class GameRulesService : IGameRulesService
+internal class GameRulesService(IMoveComparerFactory moveComparerFactory, IGameModeProvider gameModeProvider) : IGameRulesService
 {
     public GameResult Beat(Move playerMove, Move otherMove)
     {
-        var moveComparer = new MoveComparer();
+        var moveComparer = moveComparerFactory.GetComparer(gameModeProvider.GetCurrent());
         var result = moveComparer.Compare(playerMove, otherMove);
         return MapToGameResult(result);
     }

@@ -1,4 +1,6 @@
+using Billups.Api.Configuration;
 using Billups.Api.Endpoints;
+using Billups.Api.Extensions;
 using Billups.Api.Middlewares;
 using Billups.Api.Validation;
 using Billups.Application.Extensions;
@@ -12,6 +14,9 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddApplicationServices();
 builder.Services.AddDomainServices();
 builder.Services.AddInfrastructureServices(builder.Configuration);
+builder.Services.AddApiServices();
+
+builder.Services.Configure<GameSettings>(builder.Configuration.GetSection("GameSettings"));
 
 // Swagger
 builder.Services.AddEndpointsApiExplorer();

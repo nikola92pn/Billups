@@ -1,29 +1,24 @@
+using System.Collections.Immutable;
 using Billups.Application.Constants;
 using Billups.Application.Dtos;
 using Billups.Application.Interfaces;
-using Billups.Domain.Models;
+using Billups.Domain.Interfaces;
 
 namespace Billups.Application.Services;
 
-public class ChoiceService(IRandomNumberService randomNumberService) : IChoiceService
+public class ChoiceService(IRandomNumberService randomNumberService, IGameModeProvider gameModeProvider) : IChoiceService
 {
-    public IReadOnlyList<ChoiceDto> GetAll()
-        => Choices.All;
+    public ImmutableList<ChoiceDto> GetAll()
+        => Choices.GetAll(gameModeProvider.GetCurrent());
 
     public async Task<ChoiceDto> GetRandomChoiceAsync(CancellationToken cancellationToken)
     {
-        var randomMove = await GetRandomMoveAsync(cancellationToken);
-        return Choices.All.First(c => c.Move == randomMove);
-
-        async Task<Move> GetRandomMoveAsync(CancellationToken cancellationToken1)
-        {
-            var randomNumber = await randomNumberService.GetRandomNumberAsync(cancellationToken1);
-            var moves = Enum.GetValues<Move>();
-            var index = randomNumber % moves.Length;
-            return moves[index];
-        }
+        var choices = GetAll();
+        var randomNumber = await randomNumberService.GetRandomNumberAsync(cancellationToken);
+        var index = randomNumber % choices.Count;
+        return choices[index];
     }
 
     public ChoiceDto GetChoice(int choiceId) 
-        => Choices.All.First(c => c.Id == choiceId);
+        => GetAll().First(c => c.Id == choiceId);
 }
