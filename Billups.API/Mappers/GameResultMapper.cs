@@ -5,6 +5,6 @@ namespace Billups.Api.Mappers;
 
 public static class GameResultMapper
 {
-    public static GameResultResponse ToResponse(this GameResultDto gameResult)
+    public static PlayResponse ToResponse(this GameResultDto gameResult)
         => new(gameResult.Result.ToString(), gameResult.PlayerChoice.Id, gameResult.CpuChoice.Id);
 }

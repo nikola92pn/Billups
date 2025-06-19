@@ -37,6 +37,7 @@ if (app.Environment.IsDevelopment())
 app.UseMiddleware<ExceptionHandlingMiddleware>();
 
 // Endpoints
-app.MapEndpoints();
+app.MapChoicesEndpoints();
+app.MapGameEndpoints();
 
 app.Run();
