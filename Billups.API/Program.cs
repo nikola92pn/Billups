@@ -1,35 +1,34 @@
 using Billups.Api.Endpoints;
+using Billups.Api.Validation;
 using Billups.Application.Extensions;
 using Billups.Domain.Extensions;
-using Microsoft.OpenApi.Models;
+using Billups.Infrastructure.Extensions;
+using FluentValidation;
 
 var builder = WebApplication.CreateBuilder(args);
-var app = builder.Build();
 
-#region Services
-
+// Services
 builder.Services.AddApplicationServices();
 builder.Services.AddDomainServices();
+builder.Services.AddInfrastructureServices(builder.Configuration);
 
-#endregion
+// Swagger
+builder.Services.AddEndpointsApiExplorer();
+builder.Services.AddSwaggerGen();
 
-#region Swagger
+// Validators
+builder.Services.AddValidatorsFromAssemblyContaining<PlayRequestValidator>();
 
-builder.Services.AddSwaggerGen(config =>
-    config.SwaggerDoc("Billups", new OpenApiInfo()
-    {
-        Title = "Billups API",
-        Version = "v1",
-        Description = "Billups API"
-    }));
+var app = builder.Build();
 
-#endregion
+// Enable Swagger
+if (app.Environment.IsDevelopment())
+{
+    app.UseSwagger();
+    app.UseSwaggerUI();
+}
 
-#region Endpoints
-
+// Endpoints
 app.MapEndpoints();
-app.MapGet("/", () => "Hello World!");
-
-#endregion
 
 app.Run();

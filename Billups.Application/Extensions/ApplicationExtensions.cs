@@ -7,5 +7,6 @@ namespace Billups.Application.Extensions;
 public static class ApplicationExtensions
 {
     public static void AddApplicationServices(this IServiceCollection serviceCollection)
-        => serviceCollection.AddScoped<IGameService, GameService>();
+        => serviceCollection.AddScoped<IChoiceService, ChoiceService>()
+                            .AddScoped<IGameService, GameService>();
 }

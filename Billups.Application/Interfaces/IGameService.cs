@@ -1,8 +1,8 @@
-using Billups.Domain.Models;
+using Billups.Application.Dtos;
 
 namespace Billups.Application.Interfaces;
 
 public interface IGameService
 {
-    public Task Play(Move playerMove, CancellationToken cancellationToken);
+    public Task<GameResultDto> PlayAgainstCpuAsync(int playerChoiceId, CancellationToken cancellationToken);
 }

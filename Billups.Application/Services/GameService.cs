@@ -1,12 +1,16 @@
+using Billups.Application.Dtos;
 using Billups.Application.Interfaces;
-using Billups.Domain.Models;
+using Billups.Domain.Interfaces;
 
 namespace Billups.Application.Services;
 
-public class GameService: IGameService
+public class GameService(IChoiceService choiceService, IGameRulesService gameRulesService): IGameService
 {
-    public Task Play(Move playerMove, CancellationToken cancellationToken)
+    public async Task<GameResultDto> PlayAgainstCpuAsync(int playerChoiceId, CancellationToken cancellationToken)
     {
-        var 
+        var playerChoice = choiceService.GetChoice(playerChoiceId);
+        var cpuChoice = await choiceService.GetRandomChoiceAsync(cancellationToken);
+        var gameResult = gameRulesService.Beat(playerChoice.Move, cpuChoice.Move);
+        return new GameResultDto(gameResult, playerChoice,  cpuChoice);
     }
 }

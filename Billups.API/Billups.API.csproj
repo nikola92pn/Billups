@@ -9,9 +9,12 @@
     <ItemGroup>
       <ProjectReference Include="..\Billups.Application\Billups.Application.csproj" />
       <ProjectReference Include="..\Billups.Domain\Billups.Domain.csproj" />
+      <ProjectReference Include="..\Billups.Infrastructure\Billups.Infrastructure.csproj" />
     </ItemGroup>
 
     <ItemGroup>
+      <PackageReference Include="FluentValidation" Version="12.0.0" />
+      <PackageReference Include="FluentValidation.DependencyInjectionExtensions" Version="12.0.0" />
       <PackageReference Include="Swashbuckle.AspNetCore" Version="9.0.1" />
     </ItemGroup>
 
