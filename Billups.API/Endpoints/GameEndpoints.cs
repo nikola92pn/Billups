@@ -1,3 +1,4 @@
+using System.Net;
 using Billups.Api.Mappers;
 using Billups.Api.Models;
 using Billups.Application.Interfaces;
@@ -18,10 +19,15 @@ public static class GameEndpoints
             .Produces<PlayResponse>()
             .Produces<ValidationErrorResponse>(StatusCodes.Status400BadRequest)
             .Produces<ErrorResponse>(StatusCodes.Status500InternalServerError);
-        
+
         gamePlayGroup.MapGet("/history", GetRecentHistoryAsync)
             .WithName("Get recent scores")
             .Produces<HistoryResponse[]>()
+            .Produces<ErrorResponse>(StatusCodes.Status500InternalServerError);
+
+        gamePlayGroup.MapPost("/history-clear", ResetHistoryAsync)
+            .WithName("Reset recent scores")
+            .Produces((int)HttpStatusCode.NoContent)
             .Produces<ErrorResponse>(StatusCodes.Status500InternalServerError);
     }
 
@@ -36,11 +42,18 @@ public static class GameEndpoints
         var gameResult = await gameService.PlayAgainstCpuAsync(request.Player, cancellationToken);
         return Results.Ok(gameResult.ToResponse());
     }
-    
+
     private static async Task<IResult> GetRecentHistoryAsync(IGameHistoryService gameHistoryService,
         CancellationToken cancellationToken)
     {
         var history = await gameHistoryService.GetRecentHistoryAsync(cancellationToken);
         return Results.Ok(history.Select(h => h.ToResponse()));
+    }
+
+    private static async Task<IResult> ResetHistoryAsync(IGameHistoryService gameHistoryService,
+        CancellationToken cancellationToken)
+    {
+        await gameHistoryService.GetRecentHistoryAsync(cancellationToken);
+        return Results.NoContent();
     }
 }
