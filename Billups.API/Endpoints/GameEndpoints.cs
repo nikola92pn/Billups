@@ -10,13 +10,18 @@ public static class GameEndpoints
     public static void MapGameEndpoints(this WebApplication app)
     {
         var gamePlayGroup = app.MapGroup("")
-            .WithTags("Play");
+            .WithTags("Game");
 
         gamePlayGroup.MapPost("/play", PlayAsync)
             .WithName("Play Against CPU")
             .Accepts<PlayRequest>("application/json")
             .Produces<PlayResponse>()
             .Produces<ValidationErrorResponse>(StatusCodes.Status400BadRequest)
+            .Produces<ErrorResponse>(StatusCodes.Status500InternalServerError);
+        
+        gamePlayGroup.MapGet("/history", GetRecentHistoryAsync)
+            .WithName("Get recent scores")
+            .Produces<HistoryResponse[]>()
             .Produces<ErrorResponse>(StatusCodes.Status500InternalServerError);
     }
 
@@ -30,5 +35,12 @@ public static class GameEndpoints
 
         var gameResult = await gameService.PlayAgainstCpuAsync(request.Player, cancellationToken);
         return Results.Ok(gameResult.ToResponse());
+    }
+    
+    private static async Task<IResult> GetRecentHistoryAsync(IGameHistoryService gameHistoryService,
+        CancellationToken cancellationToken)
+    {
+        var history = await gameHistoryService.GetRecentHistoryAsync(cancellationToken);
+        return Results.Ok(history.Select(h => h.ToResponse()));
     }
 }

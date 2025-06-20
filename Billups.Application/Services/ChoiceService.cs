@@ -18,7 +18,4 @@ public class ChoiceService(IRandomNumberService randomNumberService, IGameModePr
         var index = randomNumber % choices.Count;
         return choices[index];
     }
-
-    public ChoiceDto GetChoice(int choiceId) 
-        => GetAll().First(c => c.Id == choiceId);
 }

@@ -1,5 +1,7 @@
 using Billups.Application.Interfaces;
+using Billups.Domain.Interfaces;
 using Billups.Infrastructure.ApiClients;
+using Billups.Infrastructure.Repositories;
 using Billups.Infrastructure.Services;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -20,5 +22,7 @@ public static class InfrastructureExtensions
             .AddPolicyHandler(HttpPolicies.GetCircuitBreakerPolicy());
 
         serviceCollection.Decorate<IRandomNumberService, RandomNumberFallbackService>();
+
+        serviceCollection.AddSingleton<IGameHistoryRepository, InMemoryGameHistoryRepository>();
     }
 }
