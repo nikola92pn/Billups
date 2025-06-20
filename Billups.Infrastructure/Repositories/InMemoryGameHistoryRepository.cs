@@ -7,12 +7,12 @@ namespace Billups.Infrastructure.Repositories;
 
 public class InMemoryGameHistoryRepository : IGameHistoryRepository
 {
-    private static readonly ConcurrentQueue<GameHistory> HistoryQueue = [];
+    private readonly ConcurrentQueue<GameHistory> _historyQueue = [];
     private const int MaxNumberOfRecords = 10;
 
     public Task<ImmutableList<GameHistory>> GetRecentHistoryAsync(CancellationToken cancellationToken)
     {
-        var recentHistory = HistoryQueue
+        var recentHistory = _historyQueue
             .Reverse()
             .Take(MaxNumberOfRecords)
             .ToImmutableList();
@@ -22,17 +22,17 @@ public class InMemoryGameHistoryRepository : IGameHistoryRepository
 
     public Task SaveAsync(GameHistory history, CancellationToken cancellationToken)
     {
-        HistoryQueue.Enqueue(history);
+        _historyQueue.Enqueue(history);
         
-        if(HistoryQueue.Count > MaxNumberOfRecords) // maintain number of records in memory
-            HistoryQueue.TryDequeue(out _);
+        if(_historyQueue.Count > MaxNumberOfRecords) // maintain number of records in memory
+            _historyQueue.TryDequeue(out _);
         
         return Task.CompletedTask;
     }
 
     public Task RemoveAll(CancellationToken cancellationToken)
     {
-        HistoryQueue.Clear();
+        _historyQueue.Clear();
         return Task.CompletedTask;
     }
 }

@@ -1,27 +1,27 @@
+using System.Collections.Immutable;
 using Billups.Domain.Interfaces;
 using Billups.Domain.Models;
+using static Billups.Domain.Models.Move;
 
 namespace Billups.Domain.Rules;
 
-internal class MoveRulesProvider : IMoveRulesProvider
+public class MoveRulesProvider : IMoveRulesProvider
 {
-    public Dictionary<Move, HashSet<Move>> GetRules(GameMode mode) =>
+    public ImmutableDictionary<Move, ImmutableHashSet<Move>> GetRules(GameMode mode) =>
         mode switch
         {
-            GameMode.Rps => new()
-            {
-                { Move.Rock, [Move.Scissors] },
-                { Move.Paper, [Move.Rock] },
-                { Move.Scissors, [Move.Paper] }
-            },
-            GameMode.Rpsls => new()
-            {
-                { Move.Rock, [Move.Scissors, Move.Lizard] },
-                { Move.Paper, [Move.Rock, Move.Spock] },
-                { Move.Scissors, [Move.Paper, Move.Lizard] },
-                { Move.Lizard, [Move.Spock, Move.Paper] },
-                { Move.Spock, [Move.Scissors, Move.Rock] }
-            },
+            GameMode.Rps => ImmutableDictionary.CreateRange([
+                KeyValuePair.Create(Rock, ImmutableHashSet.Create(Scissors)),
+                KeyValuePair.Create(Paper, ImmutableHashSet.Create(Rock)),
+                KeyValuePair.Create(Scissors, ImmutableHashSet.Create(Paper))
+            ]),
+            GameMode.Rpsls => ImmutableDictionary.CreateRange([
+                KeyValuePair.Create(Rock, ImmutableHashSet.Create(Scissors, Lizard)),
+                KeyValuePair.Create(Paper, ImmutableHashSet.Create(Rock, Spock)),
+                KeyValuePair.Create(Scissors, ImmutableHashSet.Create(Paper, Lizard)),
+                KeyValuePair.Create(Lizard, ImmutableHashSet.Create(Spock, Paper)),
+                KeyValuePair.Create(Spock, ImmutableHashSet.Create(Scissors, Rock))
+            ]),
             _ => throw new ArgumentOutOfRangeException(nameof(mode))
         };
 }

@@ -1,19 +1,18 @@
 using Billups.Application.Dtos;
 using Billups.Application.Interfaces;
-using Billups.Application.Mappers;
 using Billups.Domain.Interfaces;
 using Microsoft.Extensions.Logging;
 
 namespace Billups.Application.Services;
 
-public class GameHistoryService(IGameHistoryRepository gameHistoryRepository, ILogger<GameHistoryService> logger) : IGameHistoryService
+public class GameHistoryService(IGameHistoryRepository gameHistoryRepository, IGameHistoryMapper gameHistoryMapper, ILogger<GameHistoryService> logger) : IGameHistoryService
 {
     public async Task<IEnumerable<GameHistoryDto>> GetRecentHistoryAsync(CancellationToken cancellationToken)
     {
         logger.LogInformation("Fetching recent game history...");
         
         var historyList = await gameHistoryRepository.GetRecentHistoryAsync(cancellationToken);
-        return historyList.Select(h => h.ToGameHistoryDto());
+        return historyList.Select(gameHistoryMapper.ToDto);
     }
 
     public async Task SaveAsync(GameHistoryDto historyDto, CancellationToken cancellationToken)
@@ -24,7 +23,7 @@ public class GameHistoryService(IGameHistoryRepository gameHistoryRepository, IL
             historyDto.Result,
             historyDto.CreatedAt);
         
-        var history = historyDto.ToGameHistory();
+        var history = gameHistoryMapper.ToDomain(historyDto);
         await gameHistoryRepository.SaveAsync(history, cancellationToken);
         
         logger.LogDebug("Game history saved successfully.");

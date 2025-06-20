@@ -1,8 +1,9 @@
+using System.Collections.Immutable;
 using Billups.Domain.Models;
 
 namespace Billups.Domain.Interfaces;
 
-internal interface IMoveRulesProvider
+public interface IMoveRulesProvider
 {
-    Dictionary<Move, HashSet<Move>> GetRules(GameMode mode);
+    ImmutableDictionary<Move, ImmutableHashSet<Move>> GetRules(GameMode mode);
 }

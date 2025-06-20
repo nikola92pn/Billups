@@ -1,8 +1,9 @@
-﻿using Billups.Domain.Models;
+﻿using System.Collections.Immutable;
+using Billups.Domain.Models;
 
 namespace Billups.Domain.Services;
 
-internal class MoveComparer(Dictionary<Move, HashSet<Move>> moveRules) : IComparer<Move>
+internal class MoveComparer(ImmutableDictionary<Move, ImmutableHashSet<Move>> moveRules) : IComparer<Move>
 {
     public int Compare(Move move, Move otherMove)
     {

@@ -22,16 +22,16 @@ public static class ChoicesEndpoints
             .Produces<ErrorResponse>(StatusCodes.Status500InternalServerError);
     }
 
-    private static IResult GetChoices(IChoiceService choiceService, CancellationToken cancellationToken)
+    private static IResult GetChoices(IChoiceProvider choiceProvider, CancellationToken cancellationToken)
     {
-        var choices = choiceService.GetAll();
+        var choices = choiceProvider.GetAll();
         return Results.Ok(choices.Select(c => c.ToResponse()));
     }
 
-    private static async Task<IResult> GetRandomChoiceAsync(IChoiceService choiceService,
+    private static async Task<IResult> GetRandomChoiceAsync(IRandomChoiceGenerator randomChoiceGenerator,
         CancellationToken cancellationToken)
     {
-        var choice = await choiceService.GetRandomChoiceAsync(cancellationToken);
+        var choice = await randomChoiceGenerator.GetAsync(cancellationToken);
         return Results.Ok(choice.ToResponse());
     }
 }

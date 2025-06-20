@@ -11,5 +11,5 @@ public static class DomainExtensions
         => serviceCollection
             .AddScoped<IGameRulesService, GameRulesService>()
             .AddScoped<IMoveComparerFactory, MoveComparerFactory>()
-            .AddScoped<IMoveRulesProvider, MoveRulesProvider>();
+            .AddSingleton<IMoveRulesProvider, MoveRulesProvider>();
 }
