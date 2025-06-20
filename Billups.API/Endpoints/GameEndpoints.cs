@@ -53,7 +53,7 @@ public static class GameEndpoints
     private static async Task<IResult> ResetHistoryAsync(IGameHistoryService gameHistoryService,
         CancellationToken cancellationToken)
     {
-        await gameHistoryService.GetRecentHistoryAsync(cancellationToken);
+        await gameHistoryService.ResetHistory(cancellationToken);
         return Results.NoContent();
     }
 }
