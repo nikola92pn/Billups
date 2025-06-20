@@ -18,4 +18,7 @@ public class GameHistoryService(IGameHistoryRepository gameHistoryRepository) : 
         var history = historyDto.ToGameHistory();
         await gameHistoryRepository.SaveAsync(history, cancellationToken);
     }
+    
+    public async Task ResetHistory(CancellationToken cancellationToken) 
+        => await gameHistoryRepository.RemoveAll(cancellationToken);
 }

@@ -29,4 +29,10 @@ public class InMemoryGameHistoryRepository : IGameHistoryRepository
         
         return Task.CompletedTask;
     }
+
+    public Task RemoveAll(CancellationToken cancellationToken)
+    {
+        HistoryQueue.Clear();
+        return Task.CompletedTask;
+    }
 }
