@@ -25,7 +25,7 @@ public static class GameEndpoints
             .Produces<HistoryResponse[]>()
             .Produces<ErrorResponse>(StatusCodes.Status500InternalServerError);
 
-        gamePlayGroup.MapPost("/history-clear", ResetHistoryAsync)
+        gamePlayGroup.MapDelete("/history", ResetHistoryAsync)
             .WithName("Reset recent scores")
             .Produces((int)HttpStatusCode.NoContent)
             .Produces<ErrorResponse>(StatusCodes.Status500InternalServerError);

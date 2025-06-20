@@ -34,6 +34,7 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 
+app.UseMiddleware<LoggingMiddleware>();
 app.UseMiddleware<ExceptionHandlingMiddleware>();
 
 // Endpoints
