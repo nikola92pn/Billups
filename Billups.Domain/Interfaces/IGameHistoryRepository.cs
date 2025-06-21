@@ -5,7 +5,7 @@ namespace Billups.Domain.Interfaces;
 
 public interface IGameHistoryRepository
 {
-    public Task<ImmutableList<GameHistory>> GetRecentHistoryAsync(CancellationToken cancellationToken);
+    Task<ImmutableList<GameHistory>> GetRecentHistoryAsync(CancellationToken cancellationToken);
     Task SaveAsync(GameHistory history, CancellationToken cancellationToken);
     Task RemoveAll(CancellationToken cancellationToken);
 }

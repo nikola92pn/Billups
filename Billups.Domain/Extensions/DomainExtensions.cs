@@ -1,5 +1,4 @@
 using Billups.Domain.Interfaces;
-using Billups.Domain.Rules;
 using Billups.Domain.Services;
 using Microsoft.Extensions.DependencyInjection;
 

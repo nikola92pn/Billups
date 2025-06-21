@@ -3,9 +3,9 @@ using Billups.Domain.Interfaces;
 using Billups.Domain.Models;
 using static Billups.Domain.Models.Move;
 
-namespace Billups.Domain.Rules;
+namespace Billups.Domain.Services;
 
-public class MoveRulesProvider : IMoveRulesProvider
+internal class MoveRulesProvider : IMoveRulesProvider
 {
     public ImmutableDictionary<Move, ImmutableHashSet<Move>> GetRules(GameMode mode) =>
         mode switch
