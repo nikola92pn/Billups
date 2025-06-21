@@ -57,3 +57,5 @@ app.MapGameEndpoints();
 app.MapHistoryEndpoints();
 
 app.Run();
+
+public partial class Program;
