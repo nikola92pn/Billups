@@ -9,14 +9,14 @@ public class GameService(
     IRandomChoiceGenerator randomChoiceGenerator,
     IGameRulesService gameRulesService,
     IGameHistoryService gameHistoryService,
-    IChoiceProvider choiceProvider,
+    ICurrentChoiceResolver currentChoiceResolver,
     ILogger<GameService> logger) : IGameService
 {
     public async Task<GameResultDto> PlayAgainstCpuAsync(int playerChoiceId, CancellationToken cancellationToken)
     {
         logger.LogInformation("Starting a new game. Player selected choice ID: {PlayerChoiceId}", playerChoiceId);
 
-        var playerChoice = choiceProvider.GetChoice(playerChoiceId);
+        var playerChoice = currentChoiceResolver.GetChoice(playerChoiceId);
         var cpuChoice = await randomChoiceGenerator.GetAsync(cancellationToken);
         var gameResult = gameRulesService.Beat(playerChoice.Move, cpuChoice.Move);
 

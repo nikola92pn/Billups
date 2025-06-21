@@ -39,7 +39,7 @@ public class InMemoryGameHistoryRepository(ILogger<InMemoryGameHistoryRepository
         return Task.CompletedTask;
     }
 
-    public Task RemoveAll(CancellationToken cancellationToken)
+    public Task RemoveAllAsync(CancellationToken cancellationToken)
     {
         _historyQueue.Clear();
         logger.LogWarning("Game history cleared.");

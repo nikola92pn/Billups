@@ -4,11 +4,11 @@ using Microsoft.Extensions.Logging;
 
 namespace Billups.Application.Services;
 
-public class RandomChoiceGenerator(IRandomNumberService randomNumberService, IChoiceProvider choiceProvider, ILogger<RandomChoiceGenerator> logger) : IRandomChoiceGenerator
+public class RandomChoiceGenerator(IRandomNumberService randomNumberService, ICurrentChoiceResolver currentChoiceResolver, ILogger<RandomChoiceGenerator> logger) : IRandomChoiceGenerator
 {
     public async Task<ChoiceDto> GetAsync(CancellationToken cancellationToken)
     {
-        var choices = choiceProvider.GetAll();
+        var choices = currentChoiceResolver.GetAll();
         logger.LogDebug("Retrieved {Count} available choices for current game mode.", choices.Count);
         
         var randomNumber = await randomNumberService.GetRandomNumberAsync(cancellationToken);

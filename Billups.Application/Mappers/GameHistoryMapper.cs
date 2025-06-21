@@ -4,7 +4,7 @@ using Billups.Domain.Models;
 
 namespace Billups.Application.Mappers;
 
-public class GameHistoryMapper(IChoiceProvider choiceProvider) : IGameHistoryMapper
+public class GameHistoryMapper(ICurrentChoiceResolver currentChoiceResolver) : IGameHistoryMapper
 {
     public GameHistory ToDomain(GameHistoryDto dto)
         => new(dto.Result, dto.PlayerChoice.Move, dto.CpuChoice.Move, dto.CreatedAt);
@@ -12,8 +12,8 @@ public class GameHistoryMapper(IChoiceProvider choiceProvider) : IGameHistoryMap
     public GameHistoryDto ToDto(GameHistory history)
         => new(
             history.Result,
-            choiceProvider.GetChoice(history.PlayerMove),
-            choiceProvider.GetChoice(history.CpuMove),
+            currentChoiceResolver.GetChoice(history.PlayerMove),
+            currentChoiceResolver.GetChoice(history.CpuMove),
             history.CreatedAt
         );
 }

@@ -1,4 +1,3 @@
-using Billups.Api.Configuration;
 using Billups.Api.Endpoints;
 using Billups.Api.Extensions;
 using Billups.Api.Middlewares;
@@ -16,7 +15,7 @@ builder.Services.AddDomainServices();
 builder.Services.AddInfrastructureServices(builder.Configuration);
 builder.Services.AddApiServices();
 
-builder.Services.Configure<GameSettings>(builder.Configuration.GetSection("GameSettings"));
+builder.Services.AddHttpContextAccessor();
 
 // Swagger
 builder.Services.AddEndpointsApiExplorer();
@@ -25,9 +24,24 @@ builder.Services.AddSwaggerGen();
 // Validators
 builder.Services.AddValidatorsFromAssemblyContaining<PlayRequestValidator>();
 
+// CORS Policies
+builder.Services.AddCors(options =>
+{
+    var allowedOrigins = builder.Configuration.GetSection("AllowedHosts").Get<string>() ?? "*";
+    options.AddPolicy("CorsPolicy", policy =>
+    {
+        policy
+            .WithOrigins(allowedOrigins)
+            .AllowAnyHeader()
+            .AllowAnyMethod();
+    });
+});
+
 var app = builder.Build();
 
-// Enable Swagger
+// Middlewares
+app.UseCors("CorsPolicy");
+
 if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
@@ -40,5 +54,6 @@ app.UseMiddleware<ExceptionHandlingMiddleware>();
 // Endpoints
 app.MapChoicesEndpoints();
 app.MapGameEndpoints();
+app.MapHistoryEndpoints();
 
 app.Run();

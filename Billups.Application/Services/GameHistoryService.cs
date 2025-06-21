@@ -31,7 +31,7 @@ public class GameHistoryService(IGameHistoryRepository gameHistoryRepository, IG
     
     public async Task ResetHistory(CancellationToken cancellationToken)
     {
-        await gameHistoryRepository.RemoveAll(cancellationToken);
+        await gameHistoryRepository.RemoveAllAsync(cancellationToken);
         logger.LogInformation("Game history cleared.");
     }
 }

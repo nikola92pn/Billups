@@ -13,5 +13,6 @@ public static class ApplicationExtensions
             .AddScoped<IGameService, GameService>()
             .AddScoped<IGameHistoryService, GameHistoryService>()
             .AddScoped<IGameHistoryMapper, GameHistoryMapper>()
-            .AddSingleton<IChoiceProvider, ChoiceProvider>();
+            .AddScoped<ICurrentChoiceResolver, CurrentChoiceResolver>()
+            .AddSingleton<IChoiceCache, ChoiceCache>();
 }
