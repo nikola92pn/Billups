@@ -24,7 +24,8 @@ The app is cleanly layered with domain logic, application services, API endpoint
 - **MediatR**: Not currently used, but could be considered if the application expands.
 - **Game mode switching** is performed via the `X-Game-Mode` HTTP header.
 
----## Getting Started
+---
+## Getting Started
 
 ### Prerequisites
 
