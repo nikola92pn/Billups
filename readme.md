@@ -22,7 +22,7 @@ The app is cleanly layered with domain logic, application services, API endpoint
 - **Integration tests** do not cover all possible cases for different game modes.
 - **Unit tests**: Only few services are currently covered and by NUnit tests.
 - **MediatR**: Not currently used, but could be considered if the application expands.
-- **Game mode switching** is performed via the `X-Game-Mode` HTTP header.
+- **Game mode switching** is performed via the `X-Game-Mode` HTTP header. x-game-mode: **rps** - for classic mode, or **rpsls** for advanced mode which is consider as defualt value)
 
 ---
 ## Getting Started

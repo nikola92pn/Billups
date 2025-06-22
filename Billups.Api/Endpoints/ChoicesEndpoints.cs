@@ -19,11 +19,13 @@ public static class ChoicesEndpoints
             .WithTags("Choice");
 
         choiceGroup.MapGet("/choices", GetChoices)
-            .WithName("Get All Choices")
+            .WithName("GetAllChoices")
+            .WithDescription("Get All Choices")
             .Produces<ChoiceResponse[]>()
             .Produces<ErrorResponse>(StatusCodes.Status500InternalServerError);
         
         choiceGroup.MapGet("/choice", GetRandomChoiceAsync)
+            .WithName("GetRandomChoice")
             .WithName("Get Random Choice")
             .Produces<ChoiceResponse>()
             .Produces<ErrorResponse>(StatusCodes.Status500InternalServerError);

@@ -20,12 +20,14 @@ public static class HistoryEndpoints
             .WithTags("History");
 
         gamePlayGroup.MapGet("/history", GetRecentHistoryAsync)
-            .WithName("Get recent scores")
+            .WithName("GetRecentScores")
+            .WithDescription("Get recent scores")
             .Produces<HistoryResponse[]>()
             .Produces<ErrorResponse>(StatusCodes.Status500InternalServerError);
 
         gamePlayGroup.MapDelete("/history", ResetHistoryAsync)
-            .WithName("Reset recent scores")
+            .WithName("ResetRecentScores")
+            .WithDescription("Reset recent scores")
             .Produces((int)HttpStatusCode.NoContent)
             .Produces<ErrorResponse>(StatusCodes.Status500InternalServerError);
     }

@@ -20,7 +20,8 @@ public static class GameEndpoints
             .WithTags("Game");
 
         gamePlayGroup.MapPost("/play", PlayAsync)
-            .WithName("Play Against CPU")
+            .WithName("PlayAgainstCPU")
+            .WithDescription("Play Against CPU")
             .Accepts<PlayRequest>("application/json")
             .Produces<PlayResponse>()
             .Produces<ValidationErrorResponse>(StatusCodes.Status400BadRequest)
