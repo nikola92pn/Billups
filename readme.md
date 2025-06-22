@@ -29,11 +29,22 @@ The app is cleanly layered with domain logic, application services, API endpoint
 ### Prerequisites
 
 - [.NET 9 SDK](https://dotnet.microsoft.com/download)
+- [Docker](https://www.docker.com/get-started/)
 - (Optional) [Visual Studio 2022+](https://visualstudio.microsoft.com/) or [JetBrains Rider](https://www.jetbrains.com/rider/)
 
-### Running the tests and API
+### Running the tests and API without Docker
 
 ```sh
 dotnet build
 dotnet test
 dotnet run --project Billups.Api
+
+---
+
+### Running the tests and API using Docker
+
+```sh
+docker build -t billups-api
+docker run --dns 8.8.8.8 -p 5132:80 billups-api
+
+# Application is avalibale on http://localhost:5132
