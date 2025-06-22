@@ -48,6 +48,6 @@ dotnet run --project Billups.Api
 docker build -t billups-api .
 docker run -p 5132:80 billups-api
 
-# if 3rd party calls are slow change use 
+# if 3rd party calls are slow change to 
 # docker run --dns 8.8.8.8 -p 5132:80 billups-api
 ```
