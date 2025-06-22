@@ -44,6 +44,6 @@ dotnet run --project Billups.Api
 ### Running the tests and API using Docker
 
 ```sh
-docker build -t billups-api
+docker build -t billups-api .
 docker run --dns 8.8.8.8 -p 5132:80 billups-api
 ```
