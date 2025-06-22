@@ -33,18 +33,17 @@ The app is cleanly layered with domain logic, application services, API endpoint
 - (Optional) [Visual Studio 2022+](https://visualstudio.microsoft.com/) or [JetBrains Rider](https://www.jetbrains.com/rider/)
 
 ### Running the tests and API without Docker
+#### Application is available on http://localhost:5132
 
 ```sh
 dotnet build
 dotnet test
 dotnet run --project Billups.Api
-
----
+```
 
 ### Running the tests and API using Docker
 
 ```sh
 docker build -t billups-api
 docker run --dns 8.8.8.8 -p 5132:80 billups-api
-
-# Application is avalibale on http://localhost:5132
+```
