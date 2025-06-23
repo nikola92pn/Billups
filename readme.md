@@ -18,7 +18,6 @@ The app is cleanly layered with domain logic, application services, API endpoint
 ## Notes & Limitations
 
 - **No "real" repository**: An in-memory implementation is used for game history; there is no persistent storage.
-- **Game history** could be extended to include a `GameMode` field.
 - **Integration tests** do not cover all possible cases for different game modes.
 - **Unit tests**: Only few services are currently covered and by NUnit tests.
 - **MediatR**: Not currently used, but could be considered if the application expands.
