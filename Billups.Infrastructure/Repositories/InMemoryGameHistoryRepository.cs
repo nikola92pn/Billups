@@ -11,10 +11,11 @@ public class InMemoryGameHistoryRepository(ILogger<InMemoryGameHistoryRepository
     private readonly ConcurrentQueue<GameHistory> _historyQueue = [];
     private const int MaxNumberOfRecords = 10;
 
-    public Task<ImmutableList<GameHistory>> GetRecentHistoryAsync(CancellationToken cancellationToken)
+    public Task<ImmutableList<GameHistory>> GetRecentHistoryAsync(GameMode gameMode, CancellationToken cancellationToken)
     {
         var recentHistory = _historyQueue
             .Reverse()
+            .Where(history => history.GameMode == gameMode)
             .Take(MaxNumberOfRecords)
             .ToImmutableList();
 
@@ -33,7 +34,7 @@ public class InMemoryGameHistoryRepository(ILogger<InMemoryGameHistoryRepository
             history.CreatedAt
         );
         
-        if(_historyQueue.Count > MaxNumberOfRecords) // maintain number of records in memory
+        if(_historyQueue.Count > MaxNumberOfRecords * Enum.GetValues<GameMode>().Length) // maintain number of records in memory
             _historyQueue.TryDequeue(out _);
         
         return Task.CompletedTask;

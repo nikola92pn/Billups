@@ -12,9 +12,10 @@ public interface IGameHistoryRepository
     /// <summary>
     /// Retrieves the most recent game history records.
     /// </summary>
+    /// /// <param name="gameMode">Return only results that belong to provided game mode.</param>
     /// /// <param name="cancellationToken">Token to cancel the operation.</param>
     /// <returns>A task that represents the asynchronous operation. The task result contains a list of recent game history entries.</returns>
-    Task<ImmutableList<GameHistory>> GetRecentHistoryAsync(CancellationToken cancellationToken);
+    Task<ImmutableList<GameHistory>> GetRecentHistoryAsync(GameMode gameMode, CancellationToken cancellationToken);
 
     /// <summary>
     /// Saves a new game history entry.

@@ -15,6 +15,7 @@ public class GameServiceTests
     private readonly Mock<IGameRulesService> _gameRulesService = new();
     private readonly Mock<IGameHistoryService> _gameHistoryService = new();
     private readonly Mock<ICurrentChoiceResolver> _currentChoiceResolver = new();
+    private readonly Mock<IGameModeProvider> _gameModeProvider = new();
     private readonly Mock<ILogger<GameService>> _logger = new();
 
     private GameService CreateService() =>
@@ -23,6 +24,7 @@ public class GameServiceTests
             _gameRulesService.Object,
             _gameHistoryService.Object,
             _currentChoiceResolver.Object,
+            _gameModeProvider.Object,
             _logger.Object);
 
     [Fact]

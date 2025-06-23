@@ -5,13 +5,13 @@ using Microsoft.Extensions.Logging;
 
 namespace Billups.Application.Services;
 
-public class GameHistoryService(IGameHistoryRepository gameHistoryRepository, IGameHistoryMapper gameHistoryMapper, ILogger<GameHistoryService> logger) : IGameHistoryService
+public class GameHistoryService(IGameHistoryRepository gameHistoryRepository, IGameHistoryMapper gameHistoryMapper, IGameModeProvider gameModeProvider, ILogger<GameHistoryService> logger) : IGameHistoryService
 {
     public async Task<IEnumerable<GameHistoryDto>> GetRecentHistoryAsync(CancellationToken cancellationToken)
     {
         logger.LogInformation("Fetching recent game history...");
         
-        var historyList = await gameHistoryRepository.GetRecentHistoryAsync(cancellationToken);
+        var historyList = await gameHistoryRepository.GetRecentHistoryAsync(gameModeProvider.GetCurrent(), cancellationToken);
         return historyList.Select(gameHistoryMapper.ToDto);
     }
 

@@ -10,6 +10,7 @@ public class GameService(
     IGameRulesService gameRulesService,
     IGameHistoryService gameHistoryService,
     ICurrentChoiceResolver currentChoiceResolver,
+    IGameModeProvider gameModeProvider,
     ILogger<GameService> logger) : IGameService
 {
     public async Task<GameResultDto> PlayAgainstCpuAsync(int playerChoiceId, CancellationToken cancellationToken)
@@ -20,7 +21,7 @@ public class GameService(
         var cpuChoice = await randomChoiceGenerator.GetAsync(cancellationToken);
         var gameResult = gameRulesService.Beat(playerChoice.Move, cpuChoice.Move);
 
-        await gameHistoryService.SaveAsync(new(gameResult, playerChoice, cpuChoice, DateTime.UtcNow),
+        await gameHistoryService.SaveAsync(new(gameResult, playerChoice, cpuChoice, gameModeProvider.GetCurrent(), DateTime.UtcNow),
             cancellationToken);
 
         logger.LogInformation(
